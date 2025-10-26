@@ -14,7 +14,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 # Permitir peticiones desde el frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8080"],  # Puerto de tu frontend
+    allow_origins=["http://localhost:8080", "https://hack-mty2025.vercel.app", "http://hack-mty2025.vercel.app"],  # Puerto de tu frontend
     allow_methods=["*"],
     allow_headers=["*"],
     allow_credentials=True,        
