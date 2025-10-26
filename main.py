@@ -28,14 +28,14 @@ def safe_extract_id(resp_json: dict):
 def create_customer(): #✅
     url = f"{BASE_URL}/customers?key={API_KEY}"
     customer_data = {
-        "first_name": "Cyrce",
-        "last_name": "Salinas",
+        "first_name": "Hildegard",
+        "last_name": "Zerrweck Garcia",
         "address": {
-            "street_number": "43",
-            "street_name": "Albert",
-            "city": "CDMX",
-            "state": "CDMX",
-            "zip": "03560"
+            "street_number": "804",
+            "street_name": "Morelos",
+            "city": "Monclova",
+            "state": "Coahuila",
+            "zip": "25770"
         }
     }
     try:
@@ -59,10 +59,10 @@ def create_customer(): #✅
 def create_account(customer_id: str):
     url = f"{BASE_URL}/customers/{customer_id}/accounts?key={API_KEY}"
     account_data = {
-        "type": "Checking",
-        "nickname": "debito",
+        "type": "BBVA",
+        "nickname": "Tarjeta Azul Clasica",
         "rewards": 0,
-        "balance": 100.00
+        "balance": 0
     }
     try:
         res = requests.post(url, json=account_data, timeout=10)
@@ -107,6 +107,32 @@ def create_loan(account_id: str):
         print("✅ Loan created")
         return res_json, loan_data
     return None, loan_data
+
+
+def create_bill(account_id: str):
+    url = f"{BASE_URL}/accounts/{account_id}/bills?key={API_KEY}"
+    bill_data = {
+        "status": "pending",
+        "payee": "CFE",
+        "payment_date": "2025-10-30",
+        "nickname": "Electricidad",
+        "payment_amount": 850.50
+    }
+    try:
+        res = requests.post(url, json=bill_data, timeout=10)
+        res_json = res.json()
+    except RequestException as e:
+        print("❌ Failed to create bill:", e)
+        return None, None
+    except ValueError:
+        print("❌ Bill response not JSON")
+        return None, None
+
+    print("Bill response:", res.status_code, res.text)
+    if res.status_code in (200, 201, 202):
+        print("✅ Bill created")
+        return res_json, bill_data
+    return None, bill_data
 
 
 def save_output(data: dict):
