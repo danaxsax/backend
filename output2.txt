@@ -1,0 +1,48 @@
+{
+    "customer": {
+        "id": "68fd8d389683f20dd51a4a89",
+        "sent": {
+            "first_name": "Cyrce D",
+            "last_name": "Salinas Rojas",
+            "address": {
+                "street_number": "2208",
+                "street_name": "C Playa Revolcadero",
+                "city": "Monterrey",
+                "state": "TX",
+                "zip": "64821"
+            }
+        }
+    },
+    "account": {
+        "id": "68fd8d389683f20dd51a4a8a",
+        "sent": {
+            "type": "Credit Card",
+            "nickname": "My Credit Card",
+            "rewards": 0,
+            "balance": 0
+        }
+    },
+    "bill": {
+        "response": {
+            "message": "Created bill and added it to the account",
+            "code": 201,
+            "objectCreated": {
+                "status": "pending",
+                "payee": "Banamex",
+                "payment_date": "2025-10-05",
+                "nickname": "Costco Banamex",
+                "payment_amount": 5710,
+                "creation_date": "2025-10-26",
+                "account_id": "68fd8d389683f20dd51a4a8a",
+                "_id": "68fd8d389683f20dd51a4a8b"
+            }
+        },
+        "sent": {
+            "status": "pending",
+            "payee": "Banamex",
+            "payment_date": "2025-10-05",
+            "nickname": "Costco Banamex",
+            "payment_amount": 5710.0
+        }
+    }
+}

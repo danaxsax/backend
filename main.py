@@ -8,7 +8,7 @@ app = FastAPI(title="Nessie API AutoUploader")
 
 API_KEY = "14431d54514c6f3c8fcbfc754b1ac55d"
 BASE_URL = "http://api.nessieisreal.com"
-OUTPUT_FILE = "output.txt"
+OUTPUT_FILE = "output2.txt"
 
 
 def safe_extract_id(resp_json: dict):
@@ -28,14 +28,14 @@ def safe_extract_id(resp_json: dict):
 def create_customer(): #✅
     url = f"{BASE_URL}/customers?key={API_KEY}"
     customer_data = {
-        "first_name": "Hildegard",
-        "last_name": "Zerrweck Garcia",
+        "first_name": "Cyrce D",
+        "last_name": "Salinas Rojas",
         "address": {
-            "street_number": "804",
-            "street_name": "Morelos",
-            "city": "Monclova",
-            "state": "Coahuila",
-            "zip": "25770"
+            "street_number": "2208",
+            "street_name": "C Playa Revolcadero",
+            "city": "Monterrey",
+            "state": "TX",
+            "zip": "64821"
         }
     }
     try:
@@ -59,8 +59,8 @@ def create_customer(): #✅
 def create_account(customer_id: str):
     url = f"{BASE_URL}/customers/{customer_id}/accounts?key={API_KEY}"
     account_data = {
-        "type": "BBVA",
-        "nickname": "Tarjeta Azul Clasica",
+        "type": "Credit Card",
+        "nickname": "My Credit Card",
         "rewards": 0,
         "balance": 0
     }
@@ -82,41 +82,14 @@ def create_account(customer_id: str):
     return None, None
 
 
-def create_loan(account_id: str):
-    url = f"{BASE_URL}/accounts/{account_id}/loans?key={API_KEY}"
-    loan_data = {
-        "type": "home",
-        "status": "pending",
-        "credit_score": 720,
-        "monthly_payment": 150.75,
-        "amount": 3000,
-        "description": "Loan for demo"
-    }
-    try:
-        res = requests.post(url, json=loan_data, timeout=10)
-        res_json = res.json()
-    except RequestException as e:
-        print("❌ Failed to create loan:", e)
-        return None, None
-    except ValueError:
-        print("❌ Loan response not JSON")
-        return None, None
-
-    print("Loan response:", res.status_code, res.text)
-    if res.status_code in (200, 201, 202):
-        print("✅ Loan created")
-        return res_json, loan_data
-    return None, loan_data
-
-
 def create_bill(account_id: str):
     url = f"{BASE_URL}/accounts/{account_id}/bills?key={API_KEY}"
     bill_data = {
         "status": "pending",
-        "payee": "CFE",
-        "payment_date": "2025-10-30",
-        "nickname": "Electricidad",
-        "payment_amount": 850.50
+        "payee": "Banamex",
+        "payment_date": "2025-10-05",
+        "nickname": "Costco Banamex",
+        "payment_amount": 5710.00,
     }
     try:
         res = requests.post(url, json=bill_data, timeout=10)
@@ -166,15 +139,8 @@ def auto_upload():
         return
     output["account"] = {"id": account_id, "sent": account_sent}
 
-    # 3) Loan
-    loan_resp, loan_sent = create_loan(account_id)
-    if loan_resp:
-        output["loan"] = {"response": loan_resp, "sent": loan_sent}
-    else:
-        output["loan"] = {"response": None, "sent": loan_sent}
-        print("⚠️ Loan creation failed or returned non-201.")
 
-    # 4) Bill
+    # 3) Bill
     bill_resp, bill_sent = create_bill(account_id)
     if bill_resp:
         output["bill"] = {"response": bill_resp, "sent": bill_sent}

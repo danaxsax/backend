@@ -1,0 +1,48 @@
+{
+    "customer": {
+        "id": "68fd8b419683f20dd51a4a81",
+        "sent": {
+            "first_name": "Hildegard",
+            "last_name": "Zerrweck Garcia",
+            "address": {
+                "street_number": "804",
+                "street_name": "Morelos",
+                "city": "Monclova",
+                "state": "TX",
+                "zip": "25770"
+            }
+        }
+    },
+    "account": {
+        "id": "68fd8b419683f20dd51a4a82",
+        "sent": {
+            "type": "Credit Card",
+            "nickname": "My Credit Card",
+            "rewards": 0,
+            "balance": 0
+        }
+    },
+    "bill": {
+        "response": {
+            "message": "Created bill and added it to the account",
+            "code": 201,
+            "objectCreated": {
+                "status": "pending",
+                "payee": "BBVA",
+                "payment_date": "2025-10-19",
+                "nickname": "Tarjeta Azul Clasica",
+                "payment_amount": 7261,
+                "creation_date": "2025-10-26",
+                "account_id": "68fd8b419683f20dd51a4a82",
+                "_id": "68fd8b429683f20dd51a4a83"
+            }
+        },
+        "sent": {
+            "status": "pending",
+            "payee": "BBVA",
+            "payment_date": "2025-10-19",
+            "nickname": "Tarjeta Azul Clasica",
+            "payment_amount": 7261.0
+        }
+    }
+}
