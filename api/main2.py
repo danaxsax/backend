@@ -1,9 +1,7 @@
-# create_new_bill.py
 from fastapi import FastAPI
+from contextlib import asynccontextmanager
 import requests
 import json
-
-app = FastAPI(title="Add Bill to Existing Account")
 
 API_KEY = "14431d54514c6f3c8fcbfc754b1ac55d"
 BASE_URL = "http://api.nessieisreal.com"
@@ -15,10 +13,10 @@ def create_bill(account_id: str):
     url = f"{BASE_URL}/accounts/{account_id}/bills?key={API_KEY}"
     bill_data = {
         "status": "pending",
-        "payee": "Amazon",
+        "payee": "KLAR",
         "payment_date": "2025-11-05",
-        "nickname": "Prime Purchase",
-        "payment_amount": 2500.50
+        "nickname": "KLAR",
+        "payment_amount": 3994.63
     }
 
     print(f"📤 Sending new bill to account {account_id} ...")
@@ -39,23 +37,13 @@ def create_bill(account_id: str):
         return res_json, bill_data
 
 
-def save_output(data: dict):
-    """Guarda los datos en un archivo txt"""
-    try:
-        with open(OUTPUT_FILE, "w") as f:
-            json.dump(data, f, indent=4)
-        print(f"✅ Bill data saved to {OUTPUT_FILE}")
-    except Exception as e:
-        print("❌ Error saving output:", e)
-
-
-@app.on_event("startup")
-def upload_new_bill():
-    account_id = "68fd8b419683f20dd51a4a82"  # tu cuenta existente
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Ejecuta tareas al iniciar y cerrar el servidor"""
     print("🚀 Starting bill upload for existing account...")
+    account_id = "68fd8b419683f20dd51a4a82"
 
     bill_resp, bill_sent = create_bill(account_id)
-
     output = {
         "account_id": account_id,
         "bill": {
@@ -64,7 +52,16 @@ def upload_new_bill():
         }
     }
 
-    save_output(output)
+    with open(OUTPUT_FILE, "w") as f:
+        json.dump(output, f, indent=4)
+    print(f"📄 Bill info saved to {OUTPUT_FILE}")
+
+    yield  # permite que la app corra normalmente
+
+    print("🛑 Server shutting down...")
+
+
+app = FastAPI(title="Add Bill to Existing Account", lifespan=lifespan)
 
 
 @app.get("/")
